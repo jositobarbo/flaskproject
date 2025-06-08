@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📊 Ocupación diaria</h2>
+
+  <!-- Filtro por fecha -->
+  <form method="POST" class="row g-3 mb-4">
+    <div class="col-auto">
+      <input type="date" name="desde" class="form-control" required>
+    </div>
+    <div class="col-auto">
+      <input type="date" name="hasta" class="form-control" required>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Filtrar</button>
+    </div>
+    <div class="col-auto">
+      <a class="btn btn-success" href="{{ url_for('exportar_ocupacion') }}">⬇️ Exportar a Excel</a>
+    </div>
+  </form>
+
+  <!-- Gráfico -->
+  <canvas id="graficoOcupacion" height="100"></canvas>
+
+  <!-- Tabla -->
+  <table class="table table-striped table-hover mt-4">
+    <thead class="table-dark">
+      <tr>
+        <th>Fecha</th>
+        <th>Ocupación (%)</th>
+        <th>ADR (€)</th>
+        <th>RevPAR (€)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for fila in datos %}
+      <tr>
+        <td>{{ fila[0] }}</td>
+        <td>{{ fila[1] }}</td>
+        <td>{{ fila[2] }}</td>
+        <td>{{ fila[3] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const fechas = {{ datos | map(attribute=0) | list | tojson }};
+  const ocupaciones = {{ datos | map(attribute=1) | list | tojson }};
+  const adr = {{ datos | map(attribute=2) | list | tojson }};
+  const revpar = {{ datos | map(attribute=3) | list | tojson }};
+
+  const ctx = document.getElementById('graficoOcupacion').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: fechas,
+      datasets: [
+        {
+          label: 'Ocupación (%)',
+          data: ocupaciones,
+          borderWidth: 2,
+          tension: 0.3
+        },
+        {
+          label: 'ADR (€)',
+          data: adr,
+          borderWidth: 2,
+          tension: 0.3
+        },
+        {
+          label: 'RevPAR (€)',
+          data: revpar,
+          borderWidth: 2,
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        title: { display: true, text: 'Indicadores de Revenue por Fecha' }
+      },
+      scales: {
+        y: { beginAtZero: false }
+      }
+    }
+  });
+</script>
+{% endblock %}

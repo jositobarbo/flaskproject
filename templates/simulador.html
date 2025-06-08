@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">🔧 Simulador de Tarifas Dinámicas</h2>
+
+  <form method="POST" class="row g-3">
+
+    <div class="col-md-3">
+      <label class="form-label">Tipo de habitación</label>
+      <select class="form-select" name="habitacion" required>
+        <option value="economica">Económica</option>
+        <option value="estandar">Estándar</option>
+        <option value="superior">Superior</option>
+        <option value="suite">Suite</option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Tipo de tarifa</label>
+      <select class="form-select" name="tarifa_tipo" required>
+        <option value="reembolsable">Reembolsable</option>
+        <option value="no_reembolsable">No Reembolsable</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label">Ocupación (%)</label>
+      <input type="number" name="ocupacion" class="form-control" min="0" max="100" required>
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label">Antelación (días)</label>
+      <input type="number" name="leadtime" class="form-control" min="0" required>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Fecha de entrada</label>
+        <input type="date" class="form-control" name="fecha_entrada" required>
+    </div>
+
+
+
+    <div class="col-md-3">
+      <label class="form-label">Tipo de evento</label>
+      <select class="form-select" name="evento" required>
+        <option value="ninguno">Ninguno</option>
+        <option value="local">Local</option>
+        <option value="grande">Gran evento</option>
+      </select>
+    </div>
+
+    <div class="col-12 mt-3">
+      <button type="submit" class="btn btn-primary">Calcular tarifa sugerida</button>
+    </div>
+  </form>
+
+  {% if tarifa %}
+  <div class="alert alert-info mt-4">
+    💡 <strong>Tarifa sugerida:</strong> {{ tarifa }} €
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

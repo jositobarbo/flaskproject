@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h2 class="mb-4">Resultado del Simulador</h2>
+    <p><strong>Fecha seleccionada:</strong> {{ fecha }}</p>
+    <p><strong>Temporada detectada:</strong> {{ temporada|capitalize }}</p>
+    <p><strong>Tipo de habitación:</strong> {{ habitacion }}</p>
+    <p><strong>Tipo de tarifa:</strong> {{ tarifa_tipo }}</p>
+    <p class="fs-4 mt-3"><strong>💶 Tarifa sugerida:</strong> {{ tarifa }}</p>
+    <a class="btn btn-primary mt-4" href="{{ url_for('simulador') }}">🔙 Volver al simulador</a>
+  </div>
+</div>
+{% endblock %}

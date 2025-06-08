@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>🏨 Benchmark – Fichas de la Competencia</h2>
+
+<form method="POST" class="mb-4">
+    <div class="row g-2">
+        <div class="col-md-4">
+            <input type="text" name="nombre" class="form-control" placeholder="Nombre del hotel" required>
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="categoria" class="form-control" placeholder="Estrellas" min="1" max="5" required>
+        </div>
+        <div class="col-md-2">
+            <input type="number" step="0.1" name="puntuacion" class="form-control" placeholder="Puntuación" required>
+        </div>
+        <div class="col-md-2">
+            <input type="text" name="zona" class="form-control" placeholder="Zona">
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="habitaciones" class="form-control" placeholder="Habitaciones">
+        </div>
+        <div class="col-12 mt-2">
+            <input type="text" name="web" class="form-control" placeholder="Web oficial">
+        </div>
+        <div class="col-12 mt-2">
+            <textarea name="notas" class="form-control" placeholder="Observaciones" rows="2"></textarea>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success mt-3">➕ Añadir hotel</button>
+</form>
+
+<hr>
+
+<h3>📋 Compset Actual</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>⭐ Cat.</th>
+            <th>Puntuación</th>
+            <th>Zona</th>
+            <th>Hab.</th>
+            <th>Web</th>
+            <th>Notas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for h in hoteles %}
+        <tr>
+            <td>{{ h[1] }}</td>
+            <td>{{ h[2] }}⭐</td>
+            <td>{{ h[3] }}</td>
+            <td>{{ h[4] }}</td>
+            <td>{{ h[5] }}</td>
+            <td><a href="{{ h[6] }}" target="_blank">Web</a></td>
+            <td>{{ h[7] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
