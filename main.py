@@ -127,7 +127,7 @@ def simulador():
     if request.method == 'POST':
         fecha_entrada = request.form.get('fecha_entrada')
         habitacion = request.form.get('habitacion')
-        tarifa_tipo = request.form.get('tarifa')
+        tarifa_tipo = request.form.get('tarifa_tipo')
 
         temporada = detectar_temporada(fecha_entrada)
 
@@ -140,14 +140,14 @@ def simulador():
             base = 120
 
         # Ajustes según tipo de habitación
-        if habitacion == 'standard':
+        if habitacion == 'economica':
+            factor_hab = 0.85
+        elif habitacion == 'estandar':
             factor_hab = 1.0
         elif habitacion == 'superior':
             factor_hab = 1.15
-        elif habitacion == 'suite':
+        else:  # suite
             factor_hab = 1.30
-        else:  # deluxe
-            factor_hab = 1.45
 
         # Ajuste por tipo de tarifa
         factor_tarifa = 0.90 if tarifa_tipo == 'no_reembolsable' else 1.0
@@ -161,7 +161,7 @@ def simulador():
             temporada=temporada,
             tarifa=f"{tarifa} €",
             habitacion=habitacion.capitalize(),
-            tarifa_tipo="No reembolsable" if tarifa_tipo == 'no_reembolsable' else "Flexible"
+            tarifa_tipo="No reembolsable" if tarifa_tipo == 'no_reembolsable' else "Reembolsable"
         )
 
     return render_template('simulador.html')
