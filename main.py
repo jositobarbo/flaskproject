@@ -249,33 +249,29 @@ def calendario():
                            precios=precios_dict)
 
 
-# Crear base de datos solo si no existe
-if not os.path.exists('ocupacion.db'):
-    conn = sqlite3.connect('ocupacion.db')
-    cursor = conn.cursor()
-
-    cursor.execut
-
-import sqlite3
-
 def init_db():
     conn = sqlite3.connect("ocupacion.db")
     cursor = conn.cursor()
-    cursor.execute("""
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS ocupacion_diaria (
+            fecha TEXT PRIMARY KEY,
+            ocupacion REAL,
+            adr REAL,
+            revpar REAL
+        )
+        """
+    )
+    cursor.execute(
+        """
         CREATE TABLE IF NOT EXISTS precios (
             fecha TEXT PRIMARY KEY,
             precio REAL
         )
-    """)
-    conn.commit()
-    conn.close()
-
-init_db()  # Llamar una vez al arrancar la app
-
-def crear_tabla_compset():
-    conn = sqlite3.connect("ocupacion.db")
-    cursor = conn.cursor()
-    cursor.execute("""
+        """
+    )
+    cursor.execute(
+        """
         CREATE TABLE IF NOT EXISTS compset (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT,
@@ -286,16 +282,20 @@ def crear_tabla_compset():
             web TEXT,
             notas TEXT
         )
-    """)
+        """
+    )
     conn.commit()
     conn.close()
 
-crear_tabla_compset()
-
 def convertir_a_base64(fig):
-    buf = io.BytesIO()
+    buf = BytesIO()
     fig.savefig(buf, format="png")
     buf.seek(0)
     image_base64 = base64.b64encode(buf.read()).decode('utf-8')
     plt.close(fig)  # <- esto evita los errores de GUI
     return image_base64
+
+
+if __name__ == '__main__':
+    init_db()
+    app.run(debug=True)
