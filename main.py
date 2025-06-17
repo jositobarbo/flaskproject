@@ -253,10 +253,17 @@ def calendario():
 if not os.path.exists('ocupacion.db'):
     conn = sqlite3.connect('ocupacion.db')
     cursor = conn.cursor()
-
-    cursor.execut
-
-import sqlite3
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ocupacion_diaria (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT,
+            ocupacion REAL,
+            adr REAL,
+            revpar REAL
+        )
+    """)
+    conn.commit()
+    conn.close()
 
 def init_db():
     conn = sqlite3.connect("ocupacion.db")
@@ -293,9 +300,13 @@ def crear_tabla_compset():
 crear_tabla_compset()
 
 def convertir_a_base64(fig):
-    buf = io.BytesIO()
+    buf = BytesIO()
     fig.savefig(buf, format="png")
     buf.seek(0)
     image_base64 = base64.b64encode(buf.read()).decode('utf-8')
     plt.close(fig)  # <- esto evita los errores de GUI
     return image_base64
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
