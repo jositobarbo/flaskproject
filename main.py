@@ -293,7 +293,7 @@ def crear_tabla_compset():
 crear_tabla_compset()
 
 def convertir_a_base64(fig):
-    buf = io.BytesIO()
+    buf = BytesIO()
     fig.savefig(buf, format="png")
     buf.seek(0)
     image_base64 = base64.b64encode(buf.read()).decode('utf-8')
